@@ -11,9 +11,11 @@ module.exports.paginate = function (model, req, callback) {
             query = model.find(filter),
             result = {};
 
-        if (req.body.options) {
-            currentPage = req.body.options.currentPage;
-            pageSize = req.body.options.pageSize;
+        query.find(filter);
+
+        if (req.body.page) {
+            currentPage = req.body.page.currentPage;
+            pageSize = req.body.page.pageSize;
 
             if (pageSize) {
                 query.limit(pageSize);
@@ -26,6 +28,10 @@ module.exports.paginate = function (model, req, callback) {
             }
         }
 
+        if (req.body.sort) {
+            query.sort(req.body.sort);
+        }
+
         result = {
             page: {
                 totalItems: total,
@@ -33,27 +39,6 @@ module.exports.paginate = function (model, req, callback) {
                 currentPage: currentPage
             }
         };
-
-        //        var totalPages = Math.ceil(total / req.body.options.pageSize),
-        //
-        //            pagination = {
-        //
-        //                page: {
-        //                    totalItems: total,
-        //                    totalPages: totalPages,
-        //                    currentPage: req.body.options.currentPage
-        //                }
-        //                //                ,
-        //                //                
-        //                //                queryOptions: {
-        //                //                    skip: ((req.body.options.currentPage - 1) * req.body.options.pageSize),
-        //                //                    limit: req.body.options.pageSize
-        //                //                }
-        //            };
-
-        //        if (req.body.options.sort) {
-        //            pagination.queryOptions.sort = req.body.options.sort;
-        //        }
 
         callback(query, result);
     });

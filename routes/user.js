@@ -8,7 +8,7 @@ module.exports = function (router) {
     
     router.get('/user/:id', userController.get);
     
-    router.post('/users', userController.create);
+    router.post('/users/create', userController.create);
     
     router.put('/user/:id', userController.save);
     

@@ -6,7 +6,7 @@ var User        = require('../models/user'),
 module.exports.list = function (req, res) {
     'use strict';
     Pagination.paginate(User, req, function (query, page) {
-        query.find(function (err, result) {
+        query.exec(function (err, result) {
             page.list = result;
             res.json(dataMessage.wrap(err, page));
         });
@@ -33,16 +33,15 @@ module.exports.create = function (req, res) {
 
 module.exports.save = function (req, res) {
     'use strict';
-    
+
     var data = {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         status: req.body.status
     };
-    console.log(req.params.id);
-    
-    User.findOneAndUpdate(req.params.id, data, {}, function (err, result) {
+
+    User.findOneAndUpdate({ _id: req.params.id }, data, function (err, result) {
         res.json(dataMessage.wrap(err, result));
     });
 };

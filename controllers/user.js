@@ -1,14 +1,14 @@
 /*global require, module*/
 var User        = require('../models/user'),
     dataMessage = require('../models/dataMessage'),
-    Pagination  = require('../utils/pagination');
+    pagination  = require('../utils/pagination');
 
 module.exports.list = function (req, res) {
     'use strict';
-    Pagination.paginate(User, req, function (query, page) {
-        query.exec(function (err, result) {
-            page.list = result;
-            res.json(dataMessage.wrap(err, page));
+    pagination.paginate(User, req, function (query, result) {
+        query.exec(function (err, list) {
+            result.list = list;
+            res.json(dataMessage.wrap(err, result));
         });
     });
 };
@@ -24,15 +24,25 @@ module.exports.get = function (req, res) {
 module.exports.create = function (req, res) {
     'use strict';
 
-    var user = new User(req.body);
+    // validations
+    if (req.validations && req.validations.length > 0) {
+        res.json(dataMessage.wrap(req.validations));
+    }
+    
+    var model = new User(req.body);
 
-    user.save(function (err, result) {
+    model.save(function (err, result) {
         res.json(dataMessage.wrap(err, result));
     });
 };
 
 module.exports.save = function (req, res) {
     'use strict';
+    
+    // validations
+    if (req.validations && req.validations.length > 0) {
+        res.json(dataMessage.wrap(req.validations));
+    }
 
     var data = {
         name: req.body.name,

@@ -1,29 +1,23 @@
 /*global module*/
-var messages = [],
+module.exports.wrap = function (err, data) {
+    'use strict';
 
-    data,
+    var result = {},
+        messages = [];
 
-    addMessage = function (message, type) {
-        'use strict';
-        
-        messages.push({ message: message, type: type });
-    },
-
-    wrap = function (err, result) {
-        'use strict';
-        
-        if (err) {
+    if (err) {
+        if (err instanceof Array) {
+            messages = err;
+        } else {
             messages.push(err);
         }
-        
-        data = result;
-        
-        return data;
-    };
 
+        result.$$messages = messages;
+    }
 
-module.exports = {
-    messages: messages,
-    data: data,
-    wrap: wrap
+    if (data) {
+        result.$$data = data;
+    }
+
+    return result;
 };

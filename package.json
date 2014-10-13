@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.8.3",
     "express": "^4.9.4",
+    "jssha": "^1.5.0",
     "mongoose": "^3.8.16"
   }
 }

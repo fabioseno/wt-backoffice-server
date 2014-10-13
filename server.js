@@ -18,6 +18,7 @@ router.get('/', function (req, res) {
 require('./routes/default')(router);
 require('./routes/user')(router);
 require('./routes/auth')(router);
+require('./routes/file')(router);
 
 app.use('/api', router);
 

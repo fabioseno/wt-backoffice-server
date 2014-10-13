@@ -7,8 +7,6 @@ module.exports.all = function (req, res, next) {
     res.header('Access-Control-Expose-Headers', 'X-SessionID');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     
-    console.log(req.body);
-    
     next();
 };
 

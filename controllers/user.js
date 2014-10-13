@@ -1,7 +1,8 @@
-/*global require, module*/
+/*global require, module, jsSHA*/
 var User        = require('../models/user'),
     dataMessage = require('../models/dataMessage'),
-    pagination  = require('../utils/pagination');
+    pagination  = require('../utils/pagination'),
+    JsSHA       = require('jssha');
 
 module.exports.list = function (req, res) {
     'use strict';
@@ -29,7 +30,14 @@ module.exports.create = function (req, res) {
         res.json(dataMessage.wrap(req.validations));
     }
     
-    var model = new User(req.body);
+    var shaObj = new JsSHA(req.body.password, "TEXT"),
+        hash = shaObj.getHMAC(req.body.email, "TEXT", "SHA-1", "B64"),
+        data,
+        model;
+    
+    req.body.password = hash;
+    
+    model = new User(req.body);
 
     model.save(function (err, result) {
         res.json(dataMessage.wrap(err, result));
@@ -43,11 +51,10 @@ module.exports.save = function (req, res) {
     if (req.validations && req.validations.length > 0) {
         res.json(dataMessage.wrap(req.validations));
     }
-
+    
     var data = {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
         status: req.body.status
     };
 

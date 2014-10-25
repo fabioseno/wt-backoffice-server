@@ -29,14 +29,14 @@ module.exports.create = function (req, res) {
     if (req.validations && req.validations.length > 0) {
         res.json(dataMessage.wrap(req.validations));
     }
-    
+
     var shaObj = new JsSHA(req.body.password, "TEXT"),
         hash = shaObj.getHMAC(req.body.email, "TEXT", "SHA-1", "B64"),
         data,
         model;
-    
+
     req.body.password = hash;
-    
+
     model = new User(req.body);
 
     model.save(function (err, result) {
@@ -46,21 +46,26 @@ module.exports.create = function (req, res) {
 
 module.exports.save = function (req, res) {
     'use strict';
-    
+
+    var hasErrors = false, data;
+
     // validations
     if (req.validations && req.validations.length > 0) {
         res.json(dataMessage.wrap(req.validations));
+        hasErrors = true;
     }
-    
-    var data = {
-        name: req.body.name,
-        email: req.body.email,
-        status: req.body.status
-    };
 
-    User.findOneAndUpdate({ _id: req.params.id }, data, function (err, result) {
-        res.json(dataMessage.wrap(err, result));
-    });
+    if (!hasErrors) {
+        data = {
+            name: req.body.name,
+            email: req.body.email,
+            status: req.body.status
+        };
+
+        User.findOneAndUpdate({ _id: req.params.id }, data, function (err, result) {
+            res.json(dataMessage.wrap(err, result));
+        });
+    }
 };
 
 module.exports.remove = function (req, res) {

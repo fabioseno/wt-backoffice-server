@@ -24,7 +24,9 @@ app.use('/api', router);
 
 // database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://bo:bo@localhost/backofficedb');
+//mongoose.connect('mongodb://bo:bo@localhost/backofficedb');
+
+mongoose.connect('mongodb://webtree:webtree@ds039010.mongolab.com:39010/wt-backoffice');
 var db = mongoose.connection;
 
 db.on('error', console.error);

@@ -35,6 +35,6 @@ module.exports.logout = function (req, res) {
     'use strict';
 
     Session.remove({ email: req.body.email }, function (err, sessions) {
-        res.redirect('/');
+        res.status(200).end();
     });
 };

@@ -13,5 +13,5 @@ module.exports.all = function (req, res, next) {
 module.exports.root = function (req, res, next) {
     'use strict';
     
-    res.send('home');
+    res.status(200).end('home');
 };

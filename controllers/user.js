@@ -30,12 +30,7 @@ module.exports.create = function (req, res) {
         res.json(dataMessage.wrap(req.validations));
     }
 
-    var shaObj = new JsSHA(req.body.password, "TEXT"),
-        hash = shaObj.getHMAC(req.body.email, "TEXT", "SHA-1", "B64"),
-        data,
-        model;
-
-    req.body.password = hash;
+    var data, model;
 
     model = new User(req.body);
 

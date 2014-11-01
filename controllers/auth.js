@@ -9,7 +9,7 @@ module.exports.login = function (req, res) {
     User.findOne({ email: req.body.email, password: req.body.password }, function (err, result) {
         if (result) {
             Session.remove({ email: req.body.email }, function (err, sessions) {
-                var session = new Session({ email: req.body.email, updateDate: new Date() });
+                var session = new Session({ email: req.body.email, date: new Date() });
 
                 session.save(function (err, session) {
                     res.header('X-SessionID', session.id);

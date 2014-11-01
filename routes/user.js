@@ -15,4 +15,6 @@ module.exports = function (router) {
     
     router['delete']('/user/:id', userController.remove);
     
+    router.post('/user/resetPassword/:id', userController.resetPassword);
+    
 };

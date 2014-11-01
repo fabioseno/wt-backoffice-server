@@ -57,9 +57,11 @@ module.exports.save = function (req, res) {
             status: req.body.status
         };
 
+        /*jslint nomen: true*/
         User.findOneAndUpdate({ _id: req.params.id }, data, function (err, result) {
             res.json(dataMessage.wrap(err, result));
         });
+        /*jslint nomen: false*/
     }
 };
 
@@ -69,4 +71,28 @@ module.exports.remove = function (req, res) {
     User.findByIdAndRemove(req.params.id, function (err, result) {
         res.json(dataMessage.wrap(err, result));
     });
+};
+
+module.exports.resetPassword = function (req, res) {
+    'use strict';
+
+    var hasErrors = false, data;
+
+    // validations
+    if (req.validations && req.validations.length > 0) {
+        res.json(dataMessage.wrap(req.validations));
+        hasErrors = true;
+    }
+
+    if (!hasErrors) {
+        data = {
+            password: req.body.password
+        };
+
+        /*jslint nomen: true*/
+        User.findOneAndUpdate({ _id: req.params.id }, data, function (err, result) {
+            res.json(dataMessage.wrap(err, result));
+        });
+        /*jslint nomen: false*/
+    }
 };

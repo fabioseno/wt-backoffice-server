@@ -28,6 +28,20 @@ module.exports.required = function (req, res, next) {
     next();
 };
 
+module.exports.passwordRequired = function (req, res, next) {
+    'use strict';
+    
+    var validations = [];
+
+    req.validations = req.validations || [];
+    
+    if (!req.body || !req.body.password) {
+        req.validations.push('Campo senha é obrigatório!');
+    }
+    
+    next();
+};
+
 module.exports.emailExists = function (req, res, next) {
     'use strict';
     

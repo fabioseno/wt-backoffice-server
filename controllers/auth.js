@@ -5,15 +5,19 @@ var dataMessage = require('../models/dataMessage');
 
 module.exports.login = function (req, res) {
     'use strict';
-    
-    User.findOne({ email: req.body.email, password: req.body.password }, function (err, result) {
-        if (result) {
+
+    User.findOneAndUpdate({ email: req.body.email, password: req.body.password }, { lastAccess: new Date() }, function (err, user) {
+        if (err) {
+            res.json(500, dataMessage.wrap(err, user));
+        }
+
+        if (user) {
             Session.remove({ email: req.body.email }, function (err, sessions) {
                 var session = new Session({ email: req.body.email, date: new Date() });
 
                 session.save(function (err, session) {
                     res.header('X-SessionID', session.id);
-                    res.json(dataMessage.wrap(err, result));
+                    res.json(dataMessage.wrap(err, user));
                 });
             });
         } else {

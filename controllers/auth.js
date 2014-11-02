@@ -21,7 +21,7 @@ module.exports.login = function (req, res) {
                 });
             });
         } else {
-            res.status(401).end();
+            res.status(401).json(dataMessage.wrap('Usuário ou senha inválidos!'));
         }
     });
 };
@@ -35,6 +35,11 @@ module.exports.logout = function (req, res) {
     'use strict';
 
     Session.remove({ email: req.body.email }, function (err, sessions) {
-        res.status(200).end();
+        
+        if (err) {
+            res.status(500).json(dataMessage.wrap(err, sessions));
+        }
+        
+        res.end();
     });
 };

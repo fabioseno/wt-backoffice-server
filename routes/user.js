@@ -15,6 +15,6 @@ module.exports = function (router) {
     
     router['delete']('/user/:id', userController.remove);
     
-    router.post('/user/resetPassword/:id', userController.resetPassword);
+    router.post('/user/resetPassword/:id', userValidation.passwordRequired, userController.resetPassword);
     
 };

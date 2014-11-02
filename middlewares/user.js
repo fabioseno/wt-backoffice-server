@@ -42,6 +42,24 @@ module.exports.passwordRequired = function (req, res, next) {
     next();
 };
 
+module.exports.changePasswordRequired = function (req, res, next) {
+    'use strict';
+    
+    var validations = [];
+
+    req.validations = req.validations || [];
+    
+    if (!req.body || !req.body.password) {
+        req.validations.push('Campo senha é obrigatório!');
+    }
+    
+    if (!req.body || !req.body.newPassword) {
+        req.validations.push('Campo nova senha é obrigatório!');
+    }
+    
+    next();
+};
+
 module.exports.emailExists = function (req, res, next) {
     'use strict';
     

@@ -27,7 +27,7 @@ module.exports.isLoggedIn = function (req, res, next) {
             }
 
             if (unauthorized) {
-                res.status(401).send();
+                res.status(401).json(dataMessage.wrap('Sua sessão expirou.<br />Favor realizar novo login!'));
             } else {
                 Session.findByIdAndUpdate(req.get('SessionId'), { date: new Date() }, function (err, session) {
                     if (err) {

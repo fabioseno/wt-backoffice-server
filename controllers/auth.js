@@ -6,9 +6,9 @@ var dataMessage = require('../models/dataMessage');
 module.exports.login = function (req, res) {
     'use strict';
 
-    User.findOneAndUpdate({ email: req.body.email, password: req.body.password }, { lastAccess: new Date() }, function (err, user) {
+    User.findOneAndUpdate({ email: req.body.email, password: req.body.password, status: 'A' }, { lastAccess: new Date() }, function (err, user) {
         if (err) {
-            res.json(500, dataMessage.wrap(err, user));
+            return res.status(500).json(dataMessage.wrap(err, user));
         }
 
         if (user) {
@@ -17,11 +17,11 @@ module.exports.login = function (req, res) {
 
                 session.save(function (err, session) {
                     res.header('X-SessionID', session.id);
-                    res.json(dataMessage.wrap(err, user));
+                    return res.json(dataMessage.wrap(err, user));
                 });
             });
         } else {
-            res.status(401).json(dataMessage.wrap('Usuário ou senha inválidos!'));
+            return res.status(401).json(dataMessage.wrap('Usuário ou senha inválidos!'));
         }
     });
 };
@@ -35,11 +35,11 @@ module.exports.logout = function (req, res) {
     'use strict';
 
     Session.remove({ email: req.body.email }, function (err, sessions) {
-        
+
         if (err) {
-            res.status(500).json(dataMessage.wrap(err, sessions));
+            return res.status(500).json(dataMessage.wrap(err, sessions));
         }
-        
-        res.end();
+
+        return res.end();
     });
 };

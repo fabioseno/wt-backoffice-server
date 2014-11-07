@@ -6,6 +6,11 @@ var User        = require('../models/user'),
 
 module.exports.list = function (req, res) {
     'use strict';
+
+    var term = new RegExp(req.body.searchTerm, "i");
+
+    req.body.filter = { $or: [{ name: term }, { email: term }] };
+
     pagination.paginate(User, req, function (query, result) {
         query.exec(function (err, list) {
             if (err) {
@@ -60,7 +65,7 @@ module.exports.save = function (req, res) {
     if (req.validations && req.validations.length > 0) {
         return res.status(500).json(dataMessage.wrap(req.validations));
     }
-    
+
     data = {
         name: req.body.name,
         email: req.body.email,

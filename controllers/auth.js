@@ -12,6 +12,7 @@ module.exports.login = function (req, res) {
         }
 
         if (user) {
+            // change for update here
             Session.remove({ email: req.body.email }, function (err, sessions) {
                 var session = new Session({ email: req.body.email, date: new Date() });
 
